@@ -19,11 +19,11 @@ while sequenceNumber <= 10:
         clientSocket.sendto(message.encode(), (serverName, serverPort))
       
         serverMsg, address = clientSocket.recvfrom(1024)  
-        # When msg was received 
+        # Time msg was received 
         receiveTime = time.time()
         print(f"{serverMsg.decode()}, round trip: {receiveTime - sendTime}")
 
-    except clientSocket.timeout:
+    except timeout:
         print("Request timed out")
 
     sequenceNumber += 1
