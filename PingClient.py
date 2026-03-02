@@ -9,15 +9,20 @@ clientSocket = socket(AF_INET, SOCK_DGRAM)
 clientSocket.settimeout(1)
 
 sequenceNumber = 1
+roundTrip = 0
 
 while sequenceNumber <= 10:
-    roundTrip = time.time()
-    message = f"Ping {sequenceNumber} {roundTrip}"
+    sendTime = time.time()
+    message = f"Ping {sequenceNumber} {sendTime}"
 
     try:
-        clientSocket.send(message.encode(), (serverName, serverPort))
-        serverMsg = clientSocket.recv(1024)
-        
+        clientSocket.sendto(message.encode(), (serverName, serverPort))
+      
+        serverMsg, address = clientSocket.recvfrom(1024)  
+        # When msg was received 
+        receiveTime = time.time()
+        print(f"{serverMsg.decode()}, round trip: {receiveTime - sendTime}")
+
     except clientSocket.timeout:
         print("Request timed out")
 
